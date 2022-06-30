@@ -1,0 +1,31 @@
+# Description
+
+[httprelay](https://gitlab.com/jonas.jasas/httprelay) golang client, 
+like [httprelay-js](https://gitlab.com/jonas.jasas/httprelay-js), but only impl proxy 
+
+# Usage
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/shynome/httprelay-go"
+)
+
+func main() {
+
+	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "hello world")
+	})
+  
+	proxy := httprelay.NewProxy("http://127.0.0.1:8080")
+	proxy.Auth = auth
+
+	fmt.Printf("%shello \n", proxy.GetServerUrl())
+	relay.Serve(nil)
+}
+
+```
