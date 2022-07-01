@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 	"path"
+	"runtime"
 	"sync"
 	"time"
 
@@ -30,7 +31,7 @@ type Proxy struct {
 func NewProxy(proxyUrl string) *Proxy {
 	return &Proxy{
 		ProxyUrl: proxyUrl,
-		Parallel: 4,
+		Parallel: runtime.NumCPU(),
 		Auth:     ProxyAuth{randStr(5), randStr(8)},
 		client:   &http.Client{},
 		errRetry: 0,
