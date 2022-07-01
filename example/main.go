@@ -15,7 +15,7 @@ func main() {
 
 	proxy := httprelay.NewProxy("http://127.0.0.1:8080")
 	proxy.Auth = httprelay.ProxyAuth{ID: "aaaaa", Secret: "88888888"}
-	proxy.Parallel = 1
+	// proxy.Parallel = 1
 
 	fmt.Printf("%shello \n", proxy.GetServerUrl())
 	proxy.Serve(nil)
