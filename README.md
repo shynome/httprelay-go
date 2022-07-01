@@ -25,7 +25,7 @@ func main() {
 	proxy.Auth = auth
 
 	fmt.Printf("%shello \n", proxy.GetServerUrl())
-	relay.Serve(nil)
+	proxy.Serve(nil)
 }
 
 ```
