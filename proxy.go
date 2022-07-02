@@ -41,7 +41,7 @@ func NewProxy(proxyUrl string) *Proxy {
 		ProxyUrl: proxyUrl,
 		Parallel: runtime.NumCPU(),
 		Auth:     ProxyAuth{randStr(5), randStr(8)},
-		Client:   &http.Client{},
+		Client:   http.DefaultClient,
 		Println:  func(i ...interface{}) { fmt.Println(i...) },
 
 		ErrRetry: &ProxyErrRetry{
