@@ -29,7 +29,7 @@ type Proxy struct {
 	ProxyUrl  string
 	Parallel  int
 	Auth      ProxyAuth
-	client    *http.Client
+	Client    *http.Client
 	handler   http.Handler
 	ErrRetry  *ProxyErrRetry
 	ServerUrl string
@@ -41,7 +41,7 @@ func NewProxy(proxyUrl string) *Proxy {
 		ProxyUrl: proxyUrl,
 		Parallel: runtime.NumCPU(),
 		Auth:     ProxyAuth{randStr(5), randStr(8)},
-		client:   &http.Client{},
+		Client:   &http.Client{},
 		Println:  func(i ...interface{}) { fmt.Println(i...) },
 
 		ErrRetry: &ProxyErrRetry{
@@ -116,7 +116,7 @@ func (p *Proxy) serve(init *fetch.RequestInit) (rinit *fetch.RequestInit, err er
 	if init == nil {
 		init = p.defaultRequestInit()
 	}
-	resp, err := fetch.Run(p.client, p.GetServerUrl(), init)
+	resp, err := fetch.Run(p.Client, p.GetServerUrl(), init)
 	if err != nil {
 		return p.retry(err)
 	}
