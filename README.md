@@ -21,7 +21,7 @@ func main() {
 		fmt.Fprint(w, "hello world")
 	})
 
-	proxy := httprelay.NewProxy("http://127.0.0.1:8080")
+	proxy := httprelay.NewProxy("https://demo.httprelay.io")
 
 	fmt.Printf("%shello \n", proxy.GetServerUrl())
 	proxy.Serve(nil)
