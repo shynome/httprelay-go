@@ -57,6 +57,12 @@ func NewRequest(res *http.Response) (req *http.Request, err error) {
 	if req.URL.Path, err = headerValue(header, "HttpRelay-Proxy-Path"); err != nil {
 		return
 	}
+	req.URL.RawQuery = header.Get("HttpRelay-Proxy-Query")
+
+	req.RequestURI = req.URL.Path
+	if req.URL.RawQuery != "" {
+		req.RequestURI += "?" + req.URL.Query().Encode()
+	}
 	for k, vv := range header {
 		for _, v := range vv {
 			req.Header.Add(k, v)
