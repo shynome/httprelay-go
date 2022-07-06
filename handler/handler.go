@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 
 	"github.com/shynome/httprelay-go/fetch"
 )
@@ -41,18 +42,17 @@ func (h *Handler) Execute(ctx Context) *fetch.RequestInit {
 func NewRequest(res *http.Response) (req *http.Request, err error) {
 	var (
 		method string
-		link   string
 	)
 	header := res.Header
 	if method, err = headerValue(header, "HttpRelay-Proxy-Method"); err != nil {
 		return
 	}
-	if link, err = headerValue(header, "HttpRelay-Proxy-Url"); err != nil {
-		return
-	}
-	req, err = http.NewRequest(method, link, nil)
-	if err != nil {
-		return
+
+	req = &http.Request{
+		Method: method,
+		Body:   res.Body,
+		URL:    &url.URL{},
+		Header: http.Header{},
 	}
 	if req.URL.Path, err = headerValue(header, "HttpRelay-Proxy-Path"); err != nil {
 		return
@@ -63,12 +63,13 @@ func NewRequest(res *http.Response) (req *http.Request, err error) {
 	if req.URL.RawQuery != "" {
 		req.RequestURI += "?" + req.URL.Query().Encode()
 	}
+
 	for k, vv := range header {
 		for _, v := range vv {
 			req.Header.Add(k, v)
 		}
 	}
-	req.Body = res.Body
+
 	return
 }
 
